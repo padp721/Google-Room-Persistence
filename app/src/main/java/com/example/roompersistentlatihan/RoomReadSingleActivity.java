@@ -32,7 +32,7 @@ public class RoomReadSingleActivity extends AppCompatActivity {
         if(mahasiswa !=null){
             NamaMahasiswa.setText(mahasiswa.getNamaMahasiswa());
             Nim.setText(mahasiswa.getNim());
-            Jurusan.setText(mahasiswa.getJurusan());
+//            Jurusan.setText(mahasiswa.getJurusan());
         }
 
     }

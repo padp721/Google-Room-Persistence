@@ -2,11 +2,17 @@ package com.example.roompersistentlatihan.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity(tableName = "tb_mahasiswa")
+@Entity(tableName = "tb_mahasiswa", foreignKeys = {@ForeignKey(
+        entity = Jurusan.class,
+        parentColumns = "jurusanId",
+        childColumns = "jurusanId"
+)})
+
 public class Mahasiswa implements Serializable{
 
     @PrimaryKey(autoGenerate = true)
@@ -18,8 +24,8 @@ public class Mahasiswa implements Serializable{
     @ColumnInfo(name = "nim")
     public String nim;
 
-    @ColumnInfo(name = "jurusan")
-    public String jurusan;
+    @ColumnInfo(name = "jurusanId", index = true)
+    public int jurusanId;
 
     public int getMahasiswaId() {
         return mahasiswaId;
@@ -33,9 +39,6 @@ public class Mahasiswa implements Serializable{
         return nim;
     }
 
-    public String getJurusan() {
-        return jurusan;
-    }
 
     public void setMahasiswaId(int mahasiswaId) {
         this.mahasiswaId = mahasiswaId;
@@ -49,7 +52,11 @@ public class Mahasiswa implements Serializable{
         this.nim = nim;
     }
 
-    public void setJurusan(String jurusan) {
-        this.jurusan = jurusan;
+    public int getJurusanId() {
+        return jurusanId;
+    }
+
+    public void setJurusanId(int jurusanId) {
+        this.jurusanId = jurusanId;
     }
 }

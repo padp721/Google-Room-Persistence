@@ -8,16 +8,23 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.roompersistentlatihan.adapter.JurusanAdapter;
 import com.example.roompersistentlatihan.data.factory.AppDatabase;
+import com.example.roompersistentlatihan.model.Jurusan;
 import com.example.roompersistentlatihan.model.Mahasiswa;
+
+import java.util.List;
 
 public class RoomCreateActivity extends AppCompatActivity {
 
     private AppDatabase db;
+    public int jurusanId = 0 ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,25 +32,45 @@ public class RoomCreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create);
 
         db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "db_mahasiswa").build();
+                AppDatabase.class, "db_mahasiswa").allowMainThreadQueries().build();
 
         final EditText NamaMahasiswa    = findViewById(R.id.namamahasiswa);
         final EditText Nim              = findViewById(R.id.nim);
         final EditText Jurusan          = findViewById(R.id.jurusan);
+        final Spinner spinner           = findViewById(R.id.spinnerJurusan);
         Button btSubmit                 = findViewById(R.id.bt_submit);
+        List<Jurusan> listJurusan       = db.jurusanDAO().getAllJurusan();
 
         final Mahasiswa mahasiswa = (Mahasiswa) getIntent().getSerializableExtra("data");
+
+        JurusanAdapter myAdapter = new JurusanAdapter(this, listJurusan);
+        spinner.setAdapter(myAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Jurusan jurusan = (Jurusan) parent.getItemAtPosition(position);
+                String jurusanName = jurusan.getJurusanNama();
+                jurusanId = jurusan.getJurusanId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         if(mahasiswa !=null){
             NamaMahasiswa.setText(mahasiswa.getNamaMahasiswa());
             Nim.setText(mahasiswa.getNim());
-            Jurusan.setText(mahasiswa.getJurusan());
+//            Jurusan.setText(mahasiswa.getJurusan());
             btSubmit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mahasiswa.setNamaMahasiswa(NamaMahasiswa.getText().toString());
                     mahasiswa.setNim(Nim.getText().toString());
-                    mahasiswa.setJurusan(Jurusan.getText().toString());
+//                    mahasiswa.setJurusan(Jurusan.getText().toString());
 
                     updateMahasiswa(mahasiswa);
                 }
@@ -53,9 +80,10 @@ public class RoomCreateActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Mahasiswa b = new Mahasiswa();
-                    b.setJurusan(Jurusan.getText().toString());
+//                    b.setJurusan(Jurusan.getText().toString());
                     b.setNim(Nim.getText().toString());
                     b.setNamaMahasiswa(NamaMahasiswa.getText().toString());
+                    b.setJurusanId(jurusanId);
                     insertData(b);
                 }
             });
