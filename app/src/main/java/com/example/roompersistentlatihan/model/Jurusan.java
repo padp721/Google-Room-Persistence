@@ -37,7 +37,7 @@ public class Jurusan {
         return new Jurusan[] {
                 new Jurusan("Teknologi Informasi"),
                 new Jurusan("Teknik Elektro"),
-                new Jurusan("Teknik Spipil"),
+                new Jurusan("Teknik Sipil"),
                 new Jurusan("Teknik Mesin"),
                 new Jurusan("Teknik Arsitektur")
 

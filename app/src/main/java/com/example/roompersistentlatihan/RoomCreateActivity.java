@@ -36,7 +36,6 @@ public class RoomCreateActivity extends AppCompatActivity {
 
         final EditText NamaMahasiswa    = findViewById(R.id.namamahasiswa);
         final EditText Nim              = findViewById(R.id.nim);
-        final EditText Jurusan          = findViewById(R.id.jurusan);
         final Spinner spinner           = findViewById(R.id.spinnerJurusan);
         Button btSubmit                 = findViewById(R.id.bt_submit);
         List<Jurusan> listJurusan       = db.jurusanDAO().getAllJurusan();
@@ -64,6 +63,7 @@ public class RoomCreateActivity extends AppCompatActivity {
         if(mahasiswa !=null){
             NamaMahasiswa.setText(mahasiswa.getNamaMahasiswa());
             Nim.setText(mahasiswa.getNim());
+            spinner.setSelection(mahasiswa.getJurusanId()-1);
 //            Jurusan.setText(mahasiswa.getJurusan());
             btSubmit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,6 +71,7 @@ public class RoomCreateActivity extends AppCompatActivity {
                     mahasiswa.setNamaMahasiswa(NamaMahasiswa.getText().toString());
                     mahasiswa.setNim(Nim.getText().toString());
 //                    mahasiswa.setJurusan(Jurusan.getText().toString());
+                    mahasiswa.setJurusanId(jurusanId);
 
                     updateMahasiswa(mahasiswa);
                 }
